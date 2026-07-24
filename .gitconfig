@@ -1,0 +1,12 @@
+[user]
+  name = AJ Castro
+  email = anthonyjr.castro@proton.me
+[init]
+  defaultBranch = main
+[alias]
+  unstage = reset HEAD --
+  last = log -1 HEAD
+[difftool "nvim_difftool"]
+  cmd = nvim -c \"packadd nvim.difftool\" -d \"$LOCAL\" \"$REMOTE\"
+[diff]
+  tool = nvim_difftool
