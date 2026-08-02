@@ -22,4 +22,10 @@ fi
 
 export NVM_DIR="${HOME}/.nvm"
 
+# Gruvbox Light: https://github.com/tinted-theming/tinted-fzf/blob/main/bash/base16-gruvbox-light.config
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-} \
+--color=bg+:#ebdbb2,bg:#fbf1c7,spinner:#689d6a,hl:#458588 \
+--color=fg:#7c6f64,header:#458588,info:#d79921,pointer:#689d6a \
+--color=marker:#689d6a,fg+:#282828,prompt:#d79921,hl+:#458588"
+
 [[ -f "${HOME}/.bashrc" ]] && source "${HOME}/.bashrc"
