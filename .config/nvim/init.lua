@@ -197,6 +197,7 @@ vim.pack.add {
   'https://github.com/mfussenegger/nvim-lint',
   'https://github.com/michaeljsmith/vim-indent-object',
   'https://github.com/neovim/nvim-lspconfig',
+  'https://github.com/sainnhe/gruvbox-material',
   'https://github.com/stevearc/conform.nvim',
   'https://github.com/stevearc/quicker.nvim',
   'https://github.com/tpope/vim-eunuch',
@@ -283,6 +284,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
   end,
 })
+
+vim.cmd 'colorscheme gruvbox-material'
 
 require('conform').setup {
   formatters_by_ft = {
