@@ -28,4 +28,8 @@ export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-} \
 --color=fg:#7c6f64,header:#458588,info:#d79921,pointer:#689d6a \
 --color=marker:#689d6a,fg+:#282828,prompt:#d79921,hl+:#458588"
 
+export GIT_PS1_SHOWCOLORHINTS=1
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+
 [[ -f "${HOME}/.bashrc" ]] && source "${HOME}/.bashrc"
