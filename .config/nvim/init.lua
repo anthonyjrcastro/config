@@ -241,7 +241,7 @@ gitsigns.setup {
       gitsigns.blame_line { full = true }
     end)
 
-    nmap('Up', gitsigns.preview_hunk)
+    nmap('Up', gitsigns.preview_hunk_inline)
     nmap('Ur', gitsigns.reset_hunk)
     nmap('Us', gitsigns.stage_hunk)
   end,
