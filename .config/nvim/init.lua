@@ -96,10 +96,8 @@ vim.keymap.set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, si
 vim.keymap.set({ 'n', 'x' }, '<Down>', '<C-D>')
 vim.keymap.set({ 'n', 'x' }, '<Up>', '<C-U>')
 
-vim.keymap.set('n', 'n', "'Nn'[v:searchforward].'zv'", { expr = true })
-vim.keymap.set({ 'x', 'o' }, 'n', "'Nn'[v:searchforward]", { expr = true })
-vim.keymap.set('n', 'N', "'nN'[v:searchforward].'zv'", { expr = true })
-vim.keymap.set({ 'x', 'o' }, 'N', "'nN'[v:searchforward]", { expr = true })
+vim.keymap.set({ 'n', 'x', 'o' }, 'n', "'Nn'[v:searchforward]", { expr = true })
+vim.keymap.set({ 'n', 'x', 'o' }, 'N', "'nN'[v:searchforward]", { expr = true })
 
 vim.keymap.set({ 'n', 'i', 't' }, '<M-h>', [[<C-\><C-N><C-W><C-H>]], { silent = true })
 vim.keymap.set({ 'n', 'i', 't' }, '<M-j>', [[<C-\><C-N><C-W><C-J>]], { silent = true })
