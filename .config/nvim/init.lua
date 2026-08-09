@@ -14,7 +14,7 @@ set foldlevelstart=99
 set formatexpr=v:lua.require('conform').formatexpr()
 set ignorecase smartcase
 set linebreak breakindent
-set list
+set list listchars+=tab:»\ ,trail:⣿,nbsp:␣
 
 cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-C>\<Esc>/\\%V" : '/'
 
