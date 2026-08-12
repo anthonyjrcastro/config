@@ -26,10 +26,10 @@ nnoremap <silent><expr> ZT (v:count == 0 ? '<Cmd>tabclose<CR>' : ':<C-U>tabclose
 nnoremap <silent><expr> <M-}> ':<C-U>tabmove '.(v:count ? v:count : '+1').'<CR>'
 nnoremap <silent><expr> <M-{> ':<C-U>tabmove '.(v:count ? (v:count - 1) : '-1').'<CR>'
 
-nnoremap <M-Left>  <Cmd>vertical resize -2<CR>
-nnoremap <M-Down>  <Cmd>resize -2<CR>
-nnoremap <M-Up>    <Cmd>resize +2<CR>
-nnoremap <M-Right> <Cmd>vertical resize +2<CR>
+nnoremap <C-Left>  <Cmd>vertical resize -2<CR>
+nnoremap <C-Down>  <Cmd>resize -2<CR>
+nnoremap <C-Up>    <Cmd>resize +2<CR>
+nnoremap <C-Right> <Cmd>vertical resize +2<CR>
 
 tnoremap <Esc> <C-\><C-N>
 
