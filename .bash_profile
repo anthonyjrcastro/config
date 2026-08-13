@@ -8,6 +8,7 @@ path_add() { # https://superuser.com/a/39995
 }
 path_add "${HOME}/bin"
 path_add "${HOME}/.local/bin"
+path_add '/opt/jdt-language-server/bin'
 
 unset path_add
 

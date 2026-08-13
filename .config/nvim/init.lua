@@ -253,6 +253,7 @@ require('lint').linters_by_ft = {
 vim.lsp.enable {
   'clangd',
   'emmylua_ls',
+  'jdtls',
   'tinymist',
 }
 
@@ -289,6 +290,7 @@ require('conform').setup {
   formatters_by_ft = {
     c = { lsp_format = 'prefer' },
     cpp = { lsp_format = 'prefer' },
+    java = { lsp_format = 'prefer' },
     lua = { 'stylua' },
     markdown = { 'prettier' },
     sh = { 'shfmt' },
