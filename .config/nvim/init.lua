@@ -204,7 +204,12 @@ vim.pack.add {
   'https://github.com/tpope/vim-unimpaired',
 }
 
-require('fzf-lua').setup { fzf_colors = true }
+require('fzf-lua').setup {
+  fzf_colors = true,
+  lsp = { -- false=disable; 1=icon+kind; 2=icon only; 3=kind only
+    symbols = { symbol_style = 3 },
+  },
+}
 
 local gitsigns = require 'gitsigns'
 gitsigns.setup {
