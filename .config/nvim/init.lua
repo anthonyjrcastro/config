@@ -176,8 +176,6 @@ vim.api.nvim_create_autocmd('TermRequest', {
   end,
 })
 
-require('vim._core.ui2').enable()
-
 vim.g.diffs = {
   integrations = { fugitive = true, gitsigns = true },
 }
