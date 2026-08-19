@@ -11,7 +11,6 @@ let g:loaded_netrwPlugin = 1
 set completeopt+=fuzzy,noselect
 set expandtab shiftwidth=2 softtabstop=-1
 set foldlevelstart=99
-set formatexpr=v:lua.require('conform').formatexpr()
 set ignorecase smartcase
 set linebreak breakindent
 set list listchars+=tab:»\ ,trail:⣿,nbsp:␣
@@ -194,7 +193,6 @@ vim.pack.add {
   'https://github.com/michaeljsmith/vim-indent-object',
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/sainnhe/gruvbox-material',
-  'https://github.com/stevearc/conform.nvim',
   'https://github.com/stevearc/quicker.nvim',
   'https://github.com/tpope/vim-eunuch',
   'https://github.com/tpope/vim-fugitive',
@@ -288,18 +286,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.cmd 'colorscheme gruvbox-material'
-
-require('conform').setup {
-  formatters_by_ft = {
-    c = { lsp_format = 'prefer' },
-    cpp = { lsp_format = 'prefer' },
-    java = { lsp_format = 'prefer' },
-    lua = { 'stylua' },
-    markdown = { 'prettier' },
-    sh = { 'shfmt' },
-    typst = { lsp_format = 'prefer' },
-  },
-}
 
 require('quicker').setup {
   type_icons = { E = 'E ', W = 'W ', I = 'I ', N = 'N ', H = 'H ' },
