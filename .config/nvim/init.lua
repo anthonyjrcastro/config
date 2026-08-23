@@ -192,7 +192,6 @@ vim.pack.add {
   'https://github.com/mfussenegger/nvim-lint',
   'https://github.com/michaeljsmith/vim-indent-object',
   'https://github.com/neovim/nvim-lspconfig',
-  'https://github.com/sainnhe/gruvbox-material',
   'https://github.com/stevearc/quicker.nvim',
   'https://github.com/tpope/vim-eunuch',
   'https://github.com/tpope/vim-fugitive',
@@ -284,8 +283,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
   end,
 })
-
-vim.cmd 'colorscheme gruvbox-material'
 
 require('quicker').setup {
   type_icons = { E = 'E ', W = 'W ', I = 'I ', N = 'N ', H = 'H ' },
