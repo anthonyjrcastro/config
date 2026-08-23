@@ -68,8 +68,8 @@ command -v zoxide &>/dev/null && eval "$(zoxide init bash)"
 
 alias ls='ls --color=auto' 2>/dev/null
 alias l.='ls -d .* --color=auto' 2>/dev/null
-alias la='ls -A --color=auto' 2>/dev/null
-alias ll='ls -lh --color=auto' 2>/dev/null
+alias la='ls -a --color=auto' 2>/dev/null
+alias ll='ls -l --color=auto' 2>/dev/null
 
 alias ...='../..' 2>/dev/null
 alias ....='../../..' 2>/dev/null
