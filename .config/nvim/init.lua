@@ -14,6 +14,7 @@ set foldlevelstart=99 foldmethod=indent
 set ignorecase smartcase
 set linebreak breakindent
 set list listchars+=tab:»\ ,trail:⣿,nbsp:␣
+set winborder=rounded pumborder=rounded
 
 cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-C>\<Esc>/\\%V" : '/'
 
