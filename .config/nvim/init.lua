@@ -10,7 +10,7 @@ let g:loaded_netrwPlugin = 1
 
 set completeopt+=fuzzy,noselect
 set expandtab shiftwidth=2 softtabstop=-1
-set foldlevelstart=99
+set foldlevelstart=99 foldmethod=indent
 set ignorecase smartcase
 set linebreak breakindent
 set list listchars+=tab:»\ ,trail:⣿,nbsp:␣
