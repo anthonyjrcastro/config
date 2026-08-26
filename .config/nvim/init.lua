@@ -176,16 +176,11 @@ vim.api.nvim_create_autocmd('TermRequest', {
   end,
 })
 
-vim.g.diffs = {
-  integrations = { fugitive = true, gitsigns = true },
-}
-
 vim.g['sneak#label'] = 1
 vim.g['sneak#absolute_dir'] = 1
 vim.g['sneak#use_ic_scs'] = 1
 
 vim.pack.add {
-  'https://github.com/barrettruth/diffs.nvim',
   'https://github.com/ibhagwan/fzf-lua',
   'https://github.com/justinmk/vim-dirvish',
   'https://github.com/justinmk/vim-sneak',
