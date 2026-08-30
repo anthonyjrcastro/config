@@ -72,13 +72,6 @@ endf
 xnoremap <expr>   il <SID>line_inner_movement()
 onoremap <silent> il :normal vil<CR>
 
-func! s:restart_session() abort
-  mksession! Session.vim
-  \| restart source Session.vim
-  \| lua vim.defer_fn(function() vim.notify('restarted at: ' .. vim.fn.localtime()) vim.fs.rm 'Session.vim' end, 1000)
-endf
-nnoremap ZS :call <SID>restart_session()<CR>
-
 augroup my.config
   autocmd!
 
