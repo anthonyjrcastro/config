@@ -263,7 +263,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set('n', 'gO', '<Cmd>FzfLua lsp_document_symbols<CR>', { buffer = buf })
     end
     if client:supports_method 'workspace/symbol' then
-      vim.keymap.set('n', 'gW', '<Cmd>FzfLua lsp_workspace_symbols<CR>', { buffer = buf })
+      vim.keymap.set('n', 'gr/', '<Cmd>FzfLua lsp_workspace_symbols<CR>', { buffer = buf })
     end
     if client:supports_method 'textDocument/foldingRange' then
       local win = vim.api.nvim_get_current_win()
