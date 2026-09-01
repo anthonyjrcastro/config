@@ -22,7 +22,6 @@ set winborder=rounded pumborder=rounded
 
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 xnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
-
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 xnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 
@@ -32,7 +31,6 @@ nnoremap <Up>   <C-U>
 nnoremap <expr> n 'Nn'[v:searchforward]
 xnoremap <expr> n 'Nn'[v:searchforward]
 onoremap <expr> n 'Nn'[v:searchforward]
-
 nnoremap <expr> N 'nN'[v:searchforward]
 xnoremap <expr> N 'nN'[v:searchforward]
 onoremap <expr> N 'nN'[v:searchforward]
@@ -41,9 +39,7 @@ cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-C>\<Esc>
 
 nnoremap <silent> <M-]> gt
 nnoremap <silent> <M-[> gT
-
 nnoremap <silent><expr> ZT (v:count == 0 ? '<Cmd>tabclose<CR>' : ':<C-U>tabclose '.v:count.'<CR>')
-
 nnoremap <silent><expr> <M-}> ':<C-U>tabmove '.(v:count ? v:count : '+1').'<CR>'
 nnoremap <silent><expr> <M-{> ':<C-U>tabmove '.(v:count ? (v:count - 1) : '-1').'<CR>'
 
