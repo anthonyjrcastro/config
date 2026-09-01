@@ -8,6 +8,10 @@ vim.cmd [[
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
+let g:sneak#label = 1
+let g:sneak#use_ic_scs = 1
+let g:sneak#absolute_dir = 1
+
 set completeopt+=fuzzy,noselect
 set expandtab shiftwidth=2 softtabstop=-1
 set foldlevelstart=99 foldmethod=indent
@@ -15,6 +19,23 @@ set ignorecase smartcase
 set linebreak breakindent
 set list listchars+=tab:»\ ,trail:⣿,nbsp:␣
 set winborder=rounded pumborder=rounded
+
+nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+xnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+
+nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+xnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+
+nnoremap <Down> <C-D>
+nnoremap <Up>   <C-U>
+
+nnoremap <expr> n 'Nn'[v:searchforward]
+xnoremap <expr> n 'Nn'[v:searchforward]
+onoremap <expr> n 'Nn'[v:searchforward]
+
+nnoremap <expr> N 'nN'[v:searchforward]
+xnoremap <expr> N 'nN'[v:searchforward]
+onoremap <expr> N 'nN'[v:searchforward]
 
 cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-C>\<Esc>/\\%V" : '/'
 
@@ -88,15 +109,6 @@ augroup my.config
   autocmd TextYankPost * silent! lua vim.hl.on_yank { higroup = 'Visual', timeout = 300 }
 augroup END
 ]]
-
-vim.keymap.set({ 'n', 'x' }, 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-vim.keymap.set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-
-vim.keymap.set({ 'n', 'x' }, '<Down>', '<C-D>')
-vim.keymap.set({ 'n', 'x' }, '<Up>', '<C-U>')
-
-vim.keymap.set({ 'n', 'x', 'o' }, 'n', "'Nn'[v:searchforward]", { expr = true })
-vim.keymap.set({ 'n', 'x', 'o' }, 'N', "'nN'[v:searchforward]", { expr = true })
 
 vim.keymap.set({ 'n', 'i', 't' }, '<M-h>', [[<C-\><C-N><C-W><C-H>]], { silent = true })
 vim.keymap.set({ 'n', 'i', 't' }, '<M-j>', [[<C-\><C-N><C-W><C-J>]], { silent = true })
@@ -172,10 +184,6 @@ vim.api.nvim_create_autocmd('TermRequest', {
     end
   end,
 })
-
-vim.g['sneak#label'] = 1
-vim.g['sneak#absolute_dir'] = 1
-vim.g['sneak#use_ic_scs'] = 1
 
 vim.pack.add {
   'https://github.com/ibhagwan/fzf-lua',
