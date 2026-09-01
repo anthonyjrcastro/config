@@ -34,6 +34,9 @@ nnoremap <C-Down>  <Cmd>resize -2<CR>
 nnoremap <C-Up>    <Cmd>resize +2<CR>
 nnoremap <C-Right> <Cmd>vertical resize +2<CR>
 
+xnoremap Y "+y
+xnoremap D "+d
+
 tnoremap <Esc> <C-\><C-N>
 
 nnoremap <M-p> <Cmd>FzfLua files<CR>
@@ -99,8 +102,6 @@ vim.keymap.set({ 'n', 'i', 't' }, '<M-h>', [[<C-\><C-N><C-W><C-H>]], { silent = 
 vim.keymap.set({ 'n', 'i', 't' }, '<M-j>', [[<C-\><C-N><C-W><C-J>]], { silent = true })
 vim.keymap.set({ 'n', 'i', 't' }, '<M-k>', [[<C-\><C-N><C-W><C-K>]], { silent = true })
 vim.keymap.set({ 'n', 'i', 't' }, '<M-l>', [[<C-\><C-N><C-W><C-L>]], { silent = true })
-
-vim.keymap.set({ 'n', 'x' }, 'gs', '"+')
 
 local augroup = vim.api.nvim_create_augroup('my.config', { clear = false })
 
