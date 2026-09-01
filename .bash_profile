@@ -27,4 +27,6 @@ export GIT_PS1_SHOWCOLORHINTS=1
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-} --color=light"
+
 [[ -f "${HOME}/.bashrc" ]] && source "${HOME}/.bashrc"
