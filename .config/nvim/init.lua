@@ -180,6 +180,7 @@ vim.pack.add {
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/mfussenegger/nvim-lint',
   'https://github.com/michaeljsmith/vim-indent-object',
+  'https://github.com/miikanissi/modus-themes.nvim',
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/stevearc/quicker.nvim',
   'https://github.com/tpope/vim-eunuch',
@@ -238,6 +239,8 @@ require('lint').linters_by_ft = {
   markdown = { 'markdownlint-cli2' },
   sh = { 'shellcheck' },
 }
+
+vim.cmd.colorscheme 'modus'
 
 vim.lsp.enable {
   'clangd',
