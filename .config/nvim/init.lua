@@ -224,7 +224,6 @@ gitsigns.setup {
     local function nmap(lhs, rhs)
       vim.keymap.set('n', lhs, rhs, { buffer = bufnr })
     end
-
     nmap(']c', function()
       if vim.wo.diff then
         vim.cmd.normal { ']c', bang = true }
@@ -232,7 +231,6 @@ gitsigns.setup {
         gitsigns.nav_hunk 'next'
       end
     end)
-
     nmap('[c', function()
       if vim.wo.diff then
         vim.cmd.normal { '[c', bang = true }
@@ -240,11 +238,9 @@ gitsigns.setup {
         gitsigns.nav_hunk 'prev'
       end
     end)
-
     nmap('Ub', function()
       gitsigns.blame_line { full = true }
     end)
-
     nmap('Up', gitsigns.preview_hunk_inline)
     nmap('Ur', gitsigns.reset_hunk)
     nmap('Us', gitsigns.stage_hunk)
