@@ -20,10 +20,10 @@ set linebreak breakindent
 set list listchars+=tab:»\ ,trail:⣿,nbsp:␣
 set winborder=rounded pumborder=rounded
 
-nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
-xnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
-nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
-xnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+nnoremap <expr> j (v:count ? 'j' : 'gj')
+xnoremap <expr> j (v:count ? 'j' : 'gj')
+nnoremap <expr> k (v:count ? 'k' : 'gk')
+xnoremap <expr> k (v:count ? 'k' : 'gk')
 
 nnoremap <Down> <C-D>
 nnoremap <Up>   <C-U>
@@ -42,7 +42,7 @@ nnoremap <M-[> gT
 nnoremap <expr> <M-}> '<Cmd>tabmove '.(v:count ? v:count : '+1').'<CR>'
 nnoremap <expr> <M-{> '<Cmd>tabmove '.(v:count ? (v:count - 1) : '-1').'<CR>'
 
-nnoremap <expr> <Tab> (v:count > 0 ? '<C-W>w' : '<C-W>p')
+nnoremap <expr> <Tab> (v:count ? '<C-W>w' : '<C-W>p')
 nnoremap <S-Tab> <C-^>
 
 nnoremap <M-h> <C-W>h
