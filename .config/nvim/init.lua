@@ -37,13 +37,13 @@ onoremap <expr> N 'nN'[v:searchforward]
 
 cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-C>\<Esc>/\\%V" : '/'
 
-nnoremap <silent> <M-]> gt
-nnoremap <silent> <M-[> gT
-nnoremap <silent><expr> <M-}> ':<C-U>tabmove '.(v:count ? v:count : '+1').'<CR>'
-nnoremap <silent><expr> <M-{> ':<C-U>tabmove '.(v:count ? (v:count - 1) : '-1').'<CR>'
+nnoremap <M-]> gt
+nnoremap <M-[> gT
+nnoremap <expr> <M-}> '<Cmd>tabmove '.(v:count ? v:count : '+1').'<CR>'
+nnoremap <expr> <M-{> '<Cmd>tabmove '.(v:count ? (v:count - 1) : '-1').'<CR>'
 
-nnoremap <silent><expr> <Tab>   (v:count > 0 ? '<C-W>w' : '<C-W>p')
-nnoremap <silent>       <S-Tab> <C-^>
+nnoremap <expr> <Tab> (v:count > 0 ? '<C-W>w' : '<C-W>p')
+nnoremap <S-Tab> <C-^>
 
 nnoremap <M-h> <C-W>h
 inoremap <M-h> <C-\><C-N><C-W>h
@@ -86,8 +86,8 @@ func! s:line_outer_movement() abort
   call setpos("']", [0, lclose, cclose, 0])
   return "'[o']"
 endf
-xnoremap <expr>   al <SID>line_outer_movement()
-onoremap <silent> al :normal Val<CR>
+xnoremap <expr> al <SID>line_outer_movement()
+onoremap al <Cmd>normal Val<CR>
 
 " Text object: Inner line
 func! s:line_inner_movement() abort
@@ -99,8 +99,8 @@ func! s:line_inner_movement() abort
   call setpos("']", [0, lclose, cclose, 0])
   return "`[o`]"
 endf
-xnoremap <expr>   il <SID>line_inner_movement()
-onoremap <silent> il :normal vil<CR>
+xnoremap <expr> il <SID>line_inner_movement()
+onoremap il <Cmd>normal vil<CR>
 
 augroup my.config
   autocmd!
@@ -109,7 +109,7 @@ augroup my.config
   autocmd BufWritePre,FileWritePre * if @% !~# '\(://\)' | call mkdir(expand('<afile>:p:h'), 'p') | endif
 
   autocmd BufWritePost * lua require('lint').try_lint()
-  autocmd TextYankPost * silent! lua vim.hl.on_yank { higroup = 'Visual', timeout = 300 }
+  autocmd TextYankPost * lua vim.hl.on_yank { higroup = 'Visual', timeout = 300 }
 augroup END
 ]]
 
@@ -146,7 +146,7 @@ vim.api.nvim_create_autocmd('FileType', {
       vim.keymap.set('n', 'q', function()
         vim.cmd 'close'
         pcall(vim.api.nvim_buf_delete, ev.buf, { force = true })
-      end, { buffer = ev.buf, silent = true })
+      end, { buffer = ev.buf })
     end)
   end,
 })
