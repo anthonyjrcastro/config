@@ -46,6 +46,19 @@ nnoremap <silent><expr> <M-{> ':<C-U>tabmove '.(v:count ? (v:count - 1) : '-1').
 nnoremap <silent><expr> <Tab>   (v:count > 0 ? '<C-W>w' : '<C-W>p')
 nnoremap <silent>       <S-Tab> <C-^>
 
+nnoremap <M-h> <C-W>h
+inoremap <M-h> <C-\><C-N><C-W>h
+tnoremap <M-h> <C-\><C-N><C-W>h
+nnoremap <M-j> <C-W>j
+inoremap <M-j> <C-\><C-N><C-W>j
+tnoremap <M-j> <C-\><C-N><C-W>j
+nnoremap <M-k> <C-W>k
+inoremap <M-k> <C-\><C-N><C-W>k
+tnoremap <M-k> <C-\><C-N><C-W>k
+nnoremap <M-l> <C-W>l
+inoremap <M-l> <C-\><C-N><C-W>l
+tnoremap <M-l> <C-\><C-N><C-W>l
+
 nnoremap <C-Left>  <Cmd>vertical resize -2<CR>
 nnoremap <C-Down>  <Cmd>resize -2<CR>
 nnoremap <C-Up>    <Cmd>resize +2<CR>
@@ -105,11 +118,6 @@ augroup my.config
   autocmd TextYankPost * silent! lua vim.hl.on_yank { higroup = 'Visual', timeout = 300 }
 augroup END
 ]]
-
-vim.keymap.set({ 'n', 'i', 't' }, '<M-h>', [[<C-\><C-N><C-W><C-H>]], { silent = true })
-vim.keymap.set({ 'n', 'i', 't' }, '<M-j>', [[<C-\><C-N><C-W><C-J>]], { silent = true })
-vim.keymap.set({ 'n', 'i', 't' }, '<M-k>', [[<C-\><C-N><C-W><C-K>]], { silent = true })
-vim.keymap.set({ 'n', 'i', 't' }, '<M-l>', [[<C-\><C-N><C-W><C-L>]], { silent = true })
 
 local augroup = vim.api.nvim_create_augroup('my.config', { clear = false })
 
