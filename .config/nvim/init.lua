@@ -71,11 +71,6 @@ tnoremap <Esc> <C-\><C-N>
 nnoremap <M-p> <Cmd>FzfLua files<CR>
 nnoremap <M-/> <Cmd>FzfLua live_grep<CR>
 
-nmap UB Ub
-nmap UP Up
-nmap UR Ur
-nmap US Us
-
 " Text object: All lines
 func! s:line_outer_movement() abort
   if empty(getline(1)) && 1 == line('$')
@@ -217,6 +212,10 @@ gitsigns.setup {
     ---@param rhs function
     local function nmap(lhs, rhs)
       vim.keymap.set('n', lhs, rhs, { buffer = bufnr })
+      -- Don't set uppercase aliases for lhs w/ non-alphanumeric chars.
+      if not lhs:match '%W' then
+        vim.keymap.set('n', string.upper(lhs), lhs, { buffer = bufnr, remap = true })
+      end
     end
     nmap(']c', function()
       if vim.wo.diff then
