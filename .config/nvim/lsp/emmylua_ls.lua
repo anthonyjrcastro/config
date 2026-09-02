@@ -1,4 +1,4 @@
---- For completions and analysis for Nvim plugins in the runtime path:
+--- For completions and analysis of Nvim plugins on runtime path:
 --- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/emmylua_ls.lua
 ---@type vim.lsp.Config
 return {
@@ -16,15 +16,12 @@ return {
   end,
   settings = {
     emmylua = {
-      -- Usually the case for Nvim.
+      -- Tell the server which Lua is being used (usually LuaJIT, for Nvim).
       runtime = { version = 'LuaJIT' },
       -- Make the server aware of Nvim runtime files.
       workspace = {
-        library = {
-          vim.env.VIMRUNTIME,
-          -- For LSP Settings Type Annotations: https://github.com/neovim/nvim-lspconfig#lsp-settings-type-annotations
-          vim.api.nvim_get_runtime_file('lua/lspconfig', false)[1],
-        },
+        -- Pull in all of runtimepath. May be slower!
+        library = vim.api.nvim_get_runtime_file('', true),
       },
     },
   },
