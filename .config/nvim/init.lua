@@ -39,7 +39,6 @@ cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-C>\<Esc>
 
 nnoremap <silent> <M-]> gt
 nnoremap <silent> <M-[> gT
-nnoremap <silent><expr> ZT (v:count == 0 ? '<Cmd>tabclose<CR>' : ':<C-U>tabclose '.v:count.'<CR>')
 nnoremap <silent><expr> <M-}> ':<C-U>tabmove '.(v:count ? v:count : '+1').'<CR>'
 nnoremap <silent><expr> <M-{> ':<C-U>tabmove '.(v:count ? (v:count - 1) : '-1').'<CR>'
 
@@ -72,11 +71,6 @@ tnoremap <Esc> <C-\><C-N>
 nnoremap <M-p> <Cmd>FzfLua files<CR>
 nnoremap <M-/> <Cmd>FzfLua live_grep<CR>
 
-nnoremap <silent><expr> Uh (v:count == 0 ? '<Cmd>Git<CR>' : ':<C-U>tab Git<CR>')
-nnoremap <silent><expr> Ul (v:count == 0 ? '<Cmd>Git log<CR>' : ':<C-U>tab Git log<CR>')
-
-nmap UH Uh
-nmap UL Ul
 nmap UB Ub
 nmap UP Up
 nmap UR Ur
