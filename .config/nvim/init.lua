@@ -225,7 +225,7 @@ gitsigns.setup {
       vim.keymap.set('n', lhs, rhs, { buffer = bufnr })
       -- Don't set uppercase aliases for lhs w/ non-alphanumeric chars.
       if not lhs:match '%W' then
-        vim.keymap.set('n', string.upper(lhs), lhs, { buffer = bufnr, remap = true })
+        vim.keymap.set('n', lhs:upper(), rhs, { buffer = bufnr })
       end
     end
     nmap(']c', function()
