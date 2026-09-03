@@ -4,73 +4,6 @@
 -- - [LazyVim](https://github.com/LazyVim/LazyVim/tree/main/lua/lazyvim/config)
 
 vim.cmd [[
-" Don't load the plugin and autoload portions of netrw.
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
-
-let g:sneak#label = 1
-let g:sneak#use_ic_scs = 1
-let g:sneak#absolute_dir = 1
-
-set completeopt+=fuzzy,noselect
-set expandtab shiftwidth=2 softtabstop=-1
-set foldlevelstart=99 foldmethod=indent
-set ignorecase smartcase
-set linebreak breakindent
-set list listchars+=tab:»\ ,trail:⣿,nbsp:␣
-set winborder=rounded pumborder=rounded
-
-nnoremap <expr> j (v:count ? 'j' : 'gj')
-xnoremap <expr> j (v:count ? 'j' : 'gj')
-nnoremap <expr> k (v:count ? 'k' : 'gk')
-xnoremap <expr> k (v:count ? 'k' : 'gk')
-
-nnoremap <Down> <C-D>
-nnoremap <Up>   <C-U>
-
-nnoremap <expr> n 'Nn'[v:searchforward]
-xnoremap <expr> n 'Nn'[v:searchforward]
-onoremap <expr> n 'Nn'[v:searchforward]
-nnoremap <expr> N 'nN'[v:searchforward]
-xnoremap <expr> N 'nN'[v:searchforward]
-onoremap <expr> N 'nN'[v:searchforward]
-
-cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-C>\<Esc>/\\%V" : '/'
-
-nnoremap <M-]> gt
-nnoremap <M-[> gT
-nnoremap <expr> <M-}> '<Cmd>tabmove '.(v:count ? v:count : '+1').'<CR>'
-nnoremap <expr> <M-{> '<Cmd>tabmove '.(v:count ? (v:count - 1) : '-1').'<CR>'
-
-nnoremap <expr> <Tab> (v:count ? '<C-W>w' : '<C-W>p')
-nnoremap <S-Tab> <C-^>
-
-nnoremap <M-h> <C-W>h
-inoremap <M-h> <C-\><C-N><C-W>h
-tnoremap <M-h> <C-\><C-N><C-W>h
-nnoremap <M-j> <C-W>j
-inoremap <M-j> <C-\><C-N><C-W>j
-tnoremap <M-j> <C-\><C-N><C-W>j
-nnoremap <M-k> <C-W>k
-inoremap <M-k> <C-\><C-N><C-W>k
-tnoremap <M-k> <C-\><C-N><C-W>k
-nnoremap <M-l> <C-W>l
-inoremap <M-l> <C-\><C-N><C-W>l
-tnoremap <M-l> <C-\><C-N><C-W>l
-
-nnoremap <C-Left>  <Cmd>vertical resize -2<CR>
-nnoremap <C-Down>  <Cmd>resize -2<CR>
-nnoremap <C-Up>    <Cmd>resize +2<CR>
-nnoremap <C-Right> <Cmd>vertical resize +2<CR>
-
-xnoremap Y "+y
-xnoremap D "+d
-
-tnoremap <Esc> <C-\><C-N>
-
-nnoremap <M-p> <Cmd>FzfLua files<CR>
-nnoremap <M-/> <Cmd>FzfLua live_grep<CR>
-
 " Text object: All lines
 func! s:line_outer_movement() abort
   if empty(getline(1)) && 1 == line('$')
@@ -96,19 +29,68 @@ func! s:line_inner_movement() abort
 endf
 xnoremap <expr> il <SID>line_inner_movement()
 onoremap il <Cmd>normal vil<CR>
-
-augroup my.config
-  autocmd!
-
-  " Auto-create parent directories (except for URIs).
-  autocmd BufWritePre,FileWritePre * if @% !~# '\(://\)' | call mkdir(expand('<afile>:p:h'), 'p') | endif
-
-  autocmd BufWritePost * lua require('lint').try_lint()
-  autocmd TextYankPost * lua vim.hl.on_yank { higroup = 'Visual', timeout = 300 }
-augroup END
 ]]
 
-local augroup = vim.api.nvim_create_augroup('my.config', { clear = false })
+vim.opt.completeopt:append { 'fuzzy', 'noselect' }
+
+vim.o.expandtab = true
+vim.o.shiftwidth = 2
+vim.o.softtabstop = -1
+
+vim.o.foldlevelstart = 99
+vim.o.foldmethod = 'indent'
+
+vim.o.ignorecase = true
+vim.o.smartcase = true
+
+vim.o.breakindent = true
+vim.o.linebreak = true
+
+vim.o.list = true
+vim.opt.listchars:append { tab = '» ', trail = '⣿', nbsp = '␣' }
+
+vim.o.pumborder = 'rounded'
+vim.o.winborder = 'rounded'
+
+vim.keymap.set({ 'n', 'x' }, 'j', "v:count ? 'j' : 'gj'", { expr = true })
+vim.keymap.set({ 'n', 'x' }, 'k', "v:count ? 'k' : 'gk'", { expr = true })
+
+vim.keymap.set({ 'n', 'x' }, '<Down>', '<C-D>')
+vim.keymap.set({ 'n', 'x' }, '<Up>', '<C-U>')
+
+vim.keymap.set({ 'n', 'x', 'o' }, 'n', "'Nn'[v:searchforward]", { expr = true })
+vim.keymap.set({ 'n', 'x', 'o' }, 'N', "'nN'[v:searchforward]", { expr = true })
+
+vim.keymap.set('c', '/', [[getcmdtype() =~ '[/?]' && getcmdline() == '' ? "\<C-C>\<Esc>/\\%V" : '/']], { expr = true })
+
+vim.keymap.set('n', '<M-]>', 'gt')
+vim.keymap.set('n', '<M-[>', 'gT')
+vim.keymap.set('n', '<M-}>', function()
+  return '<Cmd>tabmove ' .. (vim.v.count > 0 and vim.v.count or '+1') .. '<CR>'
+end, { expr = true })
+vim.keymap.set('n', '<M-{>', function()
+  return '<Cmd>tabmove ' .. (vim.v.count > 0 and vim.v.count - 1 or '-1') .. '<CR>'
+end, { expr = true })
+
+vim.keymap.set('n', '<Tab>', "v:count ? '<C-W>w' : '<C-W>p'", { expr = true })
+vim.keymap.set('n', '<S-Tab>', '<C-^>')
+
+vim.keymap.set({ 'n', 'i', 't' }, '<M-h>', [[<C-\><C-N><C-W>h]])
+vim.keymap.set({ 'n', 'i', 't' }, '<M-j>', [[<C-\><C-N><C-W>j]])
+vim.keymap.set({ 'n', 'i', 't' }, '<M-k>', [[<C-\><C-N><C-W>k]])
+vim.keymap.set({ 'n', 'i', 't' }, '<M-l>', [[<C-\><C-N><C-W>l]])
+
+vim.keymap.set('n', '<C-Left>', '<Cmd>vertical resize -2<CR>')
+vim.keymap.set('n', '<C-Down>', '<Cmd>resize -2<CR>')
+vim.keymap.set('n', '<C-Up>', '<Cmd>resize +2<CR>')
+vim.keymap.set('n', '<C-Right>', '<Cmd>vertical resize +2<CR>')
+
+vim.keymap.set('x', 'Y', '"+y')
+vim.keymap.set('x', 'D', '"+d')
+
+vim.keymap.set('t', '<Esc>', [[<C-\><C-N>]])
+
+local augroup = vim.api.nvim_create_augroup('my.config', {})
 
 vim.api.nvim_create_autocmd('BufReadPost', {
   group = augroup,
@@ -123,6 +105,17 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     local lcount = vim.api.nvim_buf_line_count(buf)
     if mark[1] > 0 and mark[1] <= lcount then
       vim.cmd 'normal! g`"'
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePre', 'FileWritePre' }, {
+  group = augroup,
+  desc = 'Auto-create parent directories',
+  callback = function(ev)
+    -- Except for URIs
+    if not ev.match:match '://' then
+      vim.fn.mkdir(vim.fn.fnamemodify(ev.match, ':p:h'), 'p')
     end
   end,
 })
@@ -143,6 +136,14 @@ vim.api.nvim_create_autocmd('FileType', {
         pcall(vim.api.nvim_buf_delete, ev.buf, { force = true })
       end, { buffer = ev.buf })
     end)
+  end,
+})
+
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = augroup,
+  desc = 'Highlight yanked text',
+  callback = function()
+    vim.hl.on_yank { higroup = 'Visual', timeout = 300 }
   end,
 })
 
@@ -178,6 +179,14 @@ vim.api.nvim_create_autocmd('TermRequest', {
   end,
 })
 
+-- Don't load the plugin and autoload portions of netrw.
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+vim.g['sneak#label'] = 1
+vim.g['sneak#use_ic_scs'] = 1
+vim.g['sneak#absolute_dir'] = 1
+
 vim.pack.add {
   'https://github.com/ibhagwan/fzf-lua',
   'https://github.com/justinmk/vim-dirvish',
@@ -202,6 +211,8 @@ require('fzf-lua').setup {
     symbols = { symbol_style = 3 },
   },
 }
+vim.keymap.set('n', '<M-p>', '<Cmd>FzfLua files<CR>')
+vim.keymap.set('n', '<M-/>', '<Cmd>FzfLua live_grep<CR>')
 
 local gitsigns = require 'gitsigns'
 gitsigns.setup {
@@ -240,10 +251,18 @@ gitsigns.setup {
   end,
 }
 
-require('lint').linters_by_ft = {
+local lint = require 'lint'
+lint.linters_by_ft = {
   markdown = { 'markdownlint-cli2' },
   sh = { 'shellcheck' },
 }
+vim.api.nvim_create_autocmd('BufWritePost', {
+  group = augroup,
+  desc = 'Run linters by file type',
+  callback = function()
+    lint.try_lint()
+  end,
+})
 
 vim.cmd.colorscheme 'modus'
 
@@ -253,7 +272,6 @@ vim.lsp.enable {
   'jdtls',
   'tinymist',
 }
-
 vim.api.nvim_create_autocmd('LspAttach', {
   group = augroup,
   callback = function(ev)
