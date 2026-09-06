@@ -52,8 +52,8 @@ vim.opt.listchars:append { tab = '» ', trail = '⣿', nbsp = '␣' }
 vim.o.pumborder = 'rounded'
 vim.o.winborder = 'rounded'
 
-vim.keymap.set({ 'n', 'x' }, 'j', "v:count ? 'j' : 'gj'", { expr = true })
-vim.keymap.set({ 'n', 'x' }, 'k', "v:count ? 'k' : 'gk'", { expr = true })
+vim.keymap.set({ 'n', 'x' }, 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
+vim.keymap.set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
 vim.keymap.set({ 'n', 'x' }, '<Down>', '<C-D>')
 vim.keymap.set({ 'n', 'x' }, '<Up>', '<C-U>')
@@ -65,14 +65,63 @@ vim.keymap.set('c', '/', [[getcmdtype() =~ '[/?]' && getcmdline() == '' ? "\<C-C
 
 vim.keymap.set('n', '<M-]>', 'gt')
 vim.keymap.set('n', '<M-[>', 'gT')
-vim.keymap.set('n', '<M-}>', function()
-  return '<Cmd>tabmove ' .. (vim.v.count > 0 and vim.v.count or '+1') .. '<CR>'
-end, { expr = true })
-vim.keymap.set('n', '<M-{>', function()
-  return '<Cmd>tabmove ' .. (vim.v.count > 0 and vim.v.count - 1 or '-1') .. '<CR>'
-end, { expr = true })
 
-vim.keymap.set('n', '<Tab>', "v:count ? '<C-W>w' : '<C-W>p'", { expr = true })
+---Move current tabpage N places to the left/right.
+---@param dir '+'|'-'
+---@param cnt integer
+local function tabmove(dir, cnt)
+  -- Check which direction the tabpage moves to.
+  local to_right = dir == '+'
+  -- "Edge tab" can either be the first or last tab.
+  local edgetab = to_right and vim.fn.tabpagenr '$' or 1
+  local currtab = vim.fn.tabpagenr()
+  -- Whether l/r, max {count} should be the same.
+  local maxcnt = math.abs(edgetab - currtab)
+  -- 0=first tabpage; $=last tabpage (see `:h :tabm`)
+  local to_cycle = to_right and '0' or '$'
+  local to_edge = to_right and '$' or '0'
+
+  if currtab == edgetab then
+    if cnt == 0 then
+      vim.cmd('tabmove' .. to_cycle)
+    end
+    -- Preceding {count} does nothing.
+    return
+  end
+
+  if cnt == 0 then
+    vim.cmd('tabmove' .. dir)
+  elseif cnt <= maxcnt then
+    vim.cmd('tabmove' .. dir .. cnt)
+  else -- Don't wrap around to the opposite side.
+    vim.cmd('tabmove' .. to_edge)
+  end
+end
+
+vim.keymap.set('n', '<M-}>', function()
+  tabmove('+', vim.v.count)
+end, { desc = 'Move tabpage {count} places to the right' })
+vim.keymap.set('n', '<M-{>', function()
+  tabmove('-', vim.v.count)
+end, { desc = 'Move tabpage {count} places to the left' })
+
+-- Go to previous (or any other) window.
+local function switch_to_alt_win()
+  local currwin = vim.fn.winnr()
+  vim.cmd 'wincmd p'
+  if vim.fn.winnr() == currwin then
+    -- Force window-switch to anywhere.
+    vim.cmd 'wincmd w'
+  end
+end
+
+vim.keymap.set('n', '<Tab>', function()
+  if vim.v.count == 0 then
+    switch_to_alt_win()
+  else
+    vim.cmd(vim.v.count .. 'wincmd w')
+  end
+end, { desc = 'Go to previous (or any other) window' })
 vim.keymap.set('n', '<S-Tab>', '<C-^>')
 
 vim.keymap.set({ 'n', 'i', 't' }, '<M-h>', [[<C-\><C-N><C-W>h]])
@@ -94,15 +143,14 @@ local augroup = vim.api.nvim_create_augroup('my.config', {})
 
 vim.api.nvim_create_autocmd('BufReadPost', {
   group = augroup,
-  desc = 'Restore position when opening a buffer',
+  desc = 'Restore position when opening buffer',
   callback = function(ev)
     local exclude = { 'gitcommit', 'xxd', 'gitrebase' }
-    local buf = ev.buf
-    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.wo.diff then
+    if vim.tbl_contains(exclude, vim.bo[ev.buf].filetype) or vim.wo.diff then
       return
     end
-    local mark = vim.api.nvim_buf_get_mark(buf, '"')
-    local lcount = vim.api.nvim_buf_line_count(buf)
+    local mark = vim.api.nvim_buf_get_mark(ev.buf, '"')
+    local lcount = vim.api.nvim_buf_line_count(ev.buf)
     if mark[1] > 0 and mark[1] <= lcount then
       vim.cmd 'normal! g`"'
     end
@@ -134,7 +182,7 @@ vim.api.nvim_create_autocmd('FileType', {
       vim.keymap.set('n', 'q', function()
         vim.cmd 'close'
         pcall(vim.api.nvim_buf_delete, ev.buf, { force = true })
-      end, { buffer = ev.buf })
+      end, { buffer = ev.buf, desc = 'Close some file types with `q`' })
     end)
   end,
 })
@@ -211,51 +259,64 @@ require('fzf-lua').setup {
     symbols = { symbol_style = 3 },
   },
 }
-vim.keymap.set('n', '<M-p>', '<Cmd>FzfLua files<CR>')
-vim.keymap.set('n', '<M-/>', '<Cmd>FzfLua live_grep<CR>')
+
+vim.keymap.set('n', '<M-/>', function()
+  if vim.v.count == 0 then
+    vim.cmd 'FzfLua files'
+  else
+    vim.cmd 'FzfLua live_grep'
+  end
+end, { desc = 'FzfLua {files/live_grep}' })
 
 local gitsigns = require 'gitsigns'
+
 gitsigns.setup {
   signs_staged_enable = false,
   current_line_blame = true,
   on_attach = function(bufnr)
     ---@param lhs string
     ---@param rhs function
-    local function nmap(lhs, rhs)
-      vim.keymap.set('n', lhs, rhs, { buffer = bufnr })
+    ---@param desc string
+    local function nnoremap(lhs, rhs, desc)
+      local opts = { buffer = bufnr, desc = desc }
+      vim.keymap.set('n', lhs, rhs, opts)
       -- Don't set uppercase aliases for lhs w/ non-alphanumeric chars.
       if not lhs:match '%W' then
-        vim.keymap.set('n', lhs:upper(), rhs, { buffer = bufnr })
+        vim.keymap.set('n', lhs:upper(), rhs, opts)
       end
     end
-    nmap(']c', function()
+
+    nnoremap(']c', function()
       if vim.wo.diff then
         vim.cmd.normal { ']c', bang = true }
       else
         gitsigns.nav_hunk 'next'
       end
-    end)
-    nmap('[c', function()
+    end, 'Jump to the next hunk')
+    nnoremap('[c', function()
       if vim.wo.diff then
         vim.cmd.normal { '[c', bang = true }
       else
         gitsigns.nav_hunk 'prev'
       end
-    end)
-    nmap('Ub', function()
+    end, 'Jump to the previous hunk')
+
+    nnoremap('Ub', function()
       gitsigns.blame_line { full = true }
-    end)
-    nmap('Up', gitsigns.preview_hunk_inline)
-    nmap('Ur', gitsigns.reset_hunk)
-    nmap('Us', gitsigns.stage_hunk)
+    end, 'Run blame on current line')
+    nnoremap('Up', gitsigns.preview_hunk_inline, 'Preview the hunk under cursor')
+    nnoremap('Ur', gitsigns.reset_hunk, 'Reset the hunk under cursor')
+    nnoremap('Us', gitsigns.stage_hunk, 'Stage the hunk under cursor')
   end,
 }
 
 local lint = require 'lint'
+
 lint.linters_by_ft = {
   markdown = { 'markdownlint-cli2' },
   sh = { 'shellcheck' },
 }
+
 vim.api.nvim_create_autocmd('BufWritePost', {
   group = augroup,
   desc = 'Run linters by file type',
@@ -272,29 +333,52 @@ vim.lsp.enable {
   'jdtls',
   'tinymist',
 }
+
 vim.api.nvim_create_autocmd('LspAttach', {
   group = augroup,
+  desc = 'Enable various LSP features',
   callback = function(ev)
     local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
-    local buf = ev.buf
+
     if client:supports_method 'textDocument/completion' then
-      vim.lsp.completion.enable(true, client.id, buf, { autotrigger = true })
+      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+      vim.keymap.set('i', '<C-Space>', function()
+        vim.lsp.completion.get()
+      end, { buffer = ev.buf, desc = 'vim.lsp.completion.get()' })
     end
+
     if client:supports_method 'textDocument/inlayHint' then
       vim.keymap.set('n', '<BS>', function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-      end, { buffer = buf })
+      end, { buffer = ev.buf, desc = 'Toggle inlay hints' })
     end
+
     if client:supports_method 'textDocument/documentSymbol' then
-      vim.keymap.set('n', 'gO', '<Cmd>FzfLua lsp_document_symbols<CR>', { buffer = buf })
+      vim.keymap.set('n', 'gO', '<Cmd>FzfLua lsp_document_symbols<CR>', { buffer = ev.buf })
     end
     if client:supports_method 'workspace/symbol' then
-      vim.keymap.set('n', 'gr/', '<Cmd>FzfLua lsp_workspace_symbols<CR>', { buffer = buf })
+      vim.keymap.set('n', 'gr/', '<Cmd>FzfLua lsp_workspace_symbols<CR>', { buffer = ev.buf })
     end
+
     if client:supports_method 'textDocument/foldingRange' then
       local win = vim.api.nvim_get_current_win()
       vim.wo[win][0].foldmethod = 'expr'
       vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+    end
+
+    if client:supports_method 'textDocument/definition' then
+      vim.keymap.set('n', 'gd', function()
+        vim.lsp.buf.definition()
+      end, { buffer = ev.buf, desc = 'vim.lsp.buf.definition()' })
+    end
+
+    if client:supports_method 'textDocument/diagnostic' then
+      vim.keymap.set('n', 'gK', function()
+        vim.diagnostic.open_float()
+      end, { buffer = ev.buf, desc = 'Show diagnostics under the cursor' })
+      vim.keymap.set('n', 'grq', function()
+        vim.diagnostic.setqflist()
+      end, { buffer = ev.buf, desc = 'vim.diagnostic.setqflist()' })
     end
   end,
 })
