@@ -325,6 +325,13 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   end,
 })
 
+vim.keymap.set('n', 'gK', function()
+  vim.diagnostic.open_float()
+end, { desc = 'Show diagnostics under the cursor' })
+vim.keymap.set('n', 'grq', function()
+  vim.diagnostic.setqflist()
+end, { desc = 'vim.diagnostic.setqflist()' })
+
 vim.cmd.colorscheme 'modus'
 
 vim.lsp.enable {
@@ -370,15 +377,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set('n', 'gd', function()
         vim.lsp.buf.definition()
       end, { buffer = ev.buf, desc = 'vim.lsp.buf.definition()' })
-    end
-
-    if client:supports_method 'textDocument/diagnostic' then
-      vim.keymap.set('n', 'gK', function()
-        vim.diagnostic.open_float()
-      end, { buffer = ev.buf, desc = 'Show diagnostics under the cursor' })
-      vim.keymap.set('n', 'grq', function()
-        vim.diagnostic.setqflist()
-      end, { buffer = ev.buf, desc = 'vim.diagnostic.setqflist()' })
     end
   end,
 })
