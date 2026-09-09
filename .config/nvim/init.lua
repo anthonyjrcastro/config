@@ -332,7 +332,11 @@ vim.keymap.set('n', 'grq', function()
   vim.diagnostic.setqflist()
 end, { desc = 'vim.diagnostic.setqflist()' })
 
-vim.cmd.colorscheme 'modus'
+require('modus-themes').setup {
+  variants = { modus_operandi = 'tinted' },
+}
+
+vim.cmd 'colorscheme modus'
 
 vim.lsp.enable {
   'clangd',
