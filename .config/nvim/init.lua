@@ -52,6 +52,8 @@ vim.opt.listchars:append { tab = '» ', trail = '⣿', nbsp = '␣' }
 vim.o.pumborder = 'rounded'
 vim.o.winborder = 'rounded'
 
+vim.opt.guicursor:append { 't:ver25' }
+
 vim.keymap.set({ 'n', 'x' }, 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
 vim.keymap.set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
