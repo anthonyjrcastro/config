@@ -137,7 +137,7 @@ vim.keymap.set('n', '<C-Right>', '<Cmd>vertical resize +2<CR>')
 vim.keymap.set('x', 'Y', '"+y')
 vim.keymap.set('x', 'D', '"+d')
 
-vim.keymap.set('t', '<Esc>', [[<C-\><C-N>]])
+vim.keymap.set('t', '<C-[>', [[<C-\><C-N>]])
 
 local augroup = vim.api.nvim_create_augroup('my.config', {})
 
