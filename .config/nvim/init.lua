@@ -98,10 +98,10 @@ local function tabmove(dir, cnt)
   end
 end
 
-vim.keymap.set('n', '<M-}>', function()
+vim.keymap.set('n', '<M-S-]>', function()
   tabmove('+', vim.v.count)
 end, { desc = 'Move tabpage {count} places to the right' })
-vim.keymap.set('n', '<M-{>', function()
+vim.keymap.set('n', '<M-S-[>', function()
   tabmove('-', vim.v.count)
 end, { desc = 'Move tabpage {count} places to the left' })
 
@@ -138,6 +138,7 @@ vim.keymap.set('x', 'Y', '"+y')
 vim.keymap.set('x', 'D', '"+d')
 
 vim.keymap.set('t', '<C-[>', [[<C-\><C-N>]])
+vim.keymap.set('t', '<Esc>', '<Esc>')
 
 local augroup = vim.api.nvim_create_augroup('my.config', {})
 
