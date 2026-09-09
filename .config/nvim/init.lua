@@ -71,19 +71,19 @@ vim.keymap.set('n', '<M-[>', 'gT')
 ---@param cnt integer
 local function tabmove(dir, cnt)
   -- Check which direction the tabpage moves to.
-  local to_right = dir == '+'
+  local isright = dir == '+'
   -- "Edge tab" can either be the first or last tab.
-  local edgetab = to_right and vim.fn.tabpagenr '$' or 1
+  local edgetab = isright and vim.fn.tabpagenr '$' or 1
   local currtab = vim.fn.tabpagenr()
   -- Whether l/r, max {count} should be the same.
   local maxcnt = math.abs(edgetab - currtab)
   -- 0=first tabpage; $=last tabpage (see `:h :tabm`)
-  local to_cycle = to_right and '0' or '$'
-  local to_edge = to_right and '$' or '0'
+  local tocycle = isright and '0' or '$'
+  local toedge = isright and '$' or '0'
 
   if currtab == edgetab then
     if cnt == 0 then
-      vim.cmd('tabmove' .. to_cycle)
+      vim.cmd('tabmove' .. tocycle)
     end
     -- Preceding {count} does nothing.
     return
@@ -94,7 +94,7 @@ local function tabmove(dir, cnt)
   elseif cnt <= maxcnt then
     vim.cmd('tabmove' .. dir .. cnt)
   else -- Don't wrap around to the opposite side.
-    vim.cmd('tabmove' .. to_edge)
+    vim.cmd('tabmove' .. toedge)
   end
 end
 
