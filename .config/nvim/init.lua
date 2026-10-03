@@ -100,10 +100,10 @@ local function tabmove(dir, cnt)
   end
 end
 
-vim.keymap.set('n', '<M-S-]>', function()
+vim.keymap.set('n', '<M-}>', function()
   tabmove('+', vim.v.count)
 end, { desc = 'Move tabpage {count} places to the right' })
-vim.keymap.set('n', '<M-S-[>', function()
+vim.keymap.set('n', '<M-{>', function()
   tabmove('-', vim.v.count)
 end, { desc = 'Move tabpage {count} places to the left' })
 
@@ -139,8 +139,7 @@ vim.keymap.set('n', '<C-Right>', '<Cmd>vertical resize +2<CR>')
 vim.keymap.set('x', 'Y', '"+y')
 vim.keymap.set('x', 'D', '"+d')
 
-vim.keymap.set('t', '<C-[>', [[<C-\><C-N>]])
-vim.keymap.set('t', '<Esc>', '<Esc>')
+vim.keymap.set('t', '<Esc>', [[<C-\><C-N>]])
 
 local augroup = vim.api.nvim_create_augroup('my.config', {})
 
@@ -334,10 +333,6 @@ end, { desc = 'Show diagnostics under the cursor' })
 vim.keymap.set('n', 'grq', function()
   vim.diagnostic.setqflist()
 end, { desc = 'vim.diagnostic.setqflist()' })
-
-require('modus-themes').setup {
-  variants = { modus_operandi = 'tinted' },
-}
 
 vim.cmd 'colorscheme modus'
 
