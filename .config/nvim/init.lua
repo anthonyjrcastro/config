@@ -314,6 +314,7 @@ local lint = require 'lint'
 
 lint.linters_by_ft = {
   markdown = { 'markdownlint-cli2' },
+  python = { 'ruff' },
   sh = { 'shellcheck' },
 }
 
@@ -338,6 +339,7 @@ vim.lsp.enable {
   'clangd',
   'emmylua_ls',
   'jdtls',
+  'pyright',
   'tinymist',
 }
 
