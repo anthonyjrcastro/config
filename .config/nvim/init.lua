@@ -233,24 +233,16 @@ vim.api.nvim_create_autocmd('TermRequest', {
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.g['sneak#label'] = 1
-vim.g['sneak#use_ic_scs'] = 1
-vim.g['sneak#absolute_dir'] = 1
-
 vim.pack.add {
   'https://github.com/ibhagwan/fzf-lua',
   'https://github.com/justinmk/vim-dirvish',
-  'https://github.com/justinmk/vim-sneak',
+  'https://github.com/kylechui/nvim-surround',
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/mfussenegger/nvim-lint',
   'https://github.com/miikanissi/modus-themes.nvim',
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/stevearc/quicker.nvim',
-  'https://github.com/tpope/vim-eunuch',
   'https://github.com/tpope/vim-fugitive',
-  'https://github.com/tpope/vim-repeat',
-  'https://github.com/tpope/vim-surround',
-  'https://github.com/tpope/vim-unimpaired',
 }
 
 require('fzf-lua').setup {
