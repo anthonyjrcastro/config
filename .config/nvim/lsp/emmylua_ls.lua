@@ -14,6 +14,7 @@ return {
       end
     end
   end,
+  ---@type lspconfig.settings.emmylua_ls
   settings = {
     emmylua = {
       -- Tell the server which Lua is being used (usually LuaJIT, for Nvim).
