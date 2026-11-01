@@ -29,4 +29,7 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-} --color=light"
 
+# Stop the installer from modifying shell profiles.
+export UV_NO_MODIFY_PATH=1
+
 [[ -f "${HOME}/.bashrc" ]] && source "${HOME}/.bashrc"
