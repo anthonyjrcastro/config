@@ -31,14 +31,9 @@ xnoremap <expr> il <SID>line_inner_movement()
 onoremap il <Cmd>normal vil<CR>
 ]]
 
-vim.opt.completeopt:append { 'fuzzy', 'noselect' }
-
 vim.o.expandtab = true
 vim.o.shiftwidth = 2
 vim.o.softtabstop = -1
-
-vim.o.foldlevelstart = 99
-vim.o.foldmethod = 'indent'
 
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -49,11 +44,6 @@ vim.o.linebreak = true
 vim.o.list = true
 vim.opt.listchars:append { tab = '» ', trail = '⣿', nbsp = '␣' }
 
-vim.o.pumborder = 'rounded'
-vim.o.winborder = 'rounded'
-
-vim.opt.guicursor:append { 't:ver25' }
-
 vim.keymap.set({ 'n', 'x' }, 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
 vim.keymap.set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
@@ -63,49 +53,8 @@ vim.keymap.set({ 'n', 'x' }, '<Up>', '<C-U>')
 vim.keymap.set({ 'n', 'x', 'o' }, 'n', "'Nn'[v:searchforward]", { expr = true })
 vim.keymap.set({ 'n', 'x', 'o' }, 'N', "'nN'[v:searchforward]", { expr = true })
 
-vim.keymap.set('c', '/', [[getcmdtype() =~ '[/?]' && getcmdline() == '' ? "\<C-C>\<Esc>/\\%V" : '/']], { expr = true })
-
 vim.keymap.set('n', '<M-]>', 'gt')
 vim.keymap.set('n', '<M-[>', 'gT')
-
----Move current tabpage N places to the left/right.
----@param dir '+'|'-'
----@param cnt integer
-local function tabmove(dir, cnt)
-  -- Check which direction the tabpage moves to.
-  local isright = dir == '+'
-  -- "Edge tab" can either be the first or last tab.
-  local edgetab = isright and vim.fn.tabpagenr '$' or 1
-  local currtab = vim.fn.tabpagenr()
-  -- Whether l/r, max {count} should be the same.
-  local maxcnt = math.abs(edgetab - currtab)
-  -- 0=first tabpage; $=last tabpage (see `:h :tabm`)
-  local tocycle = isright and '0' or '$'
-  local toedge = isright and '$' or '0'
-
-  if currtab == edgetab then
-    if cnt == 0 then
-      vim.cmd('tabmove' .. tocycle)
-    end
-    -- Preceding {count} does nothing.
-    return
-  end
-
-  if cnt == 0 then
-    vim.cmd('tabmove' .. dir)
-  elseif cnt <= maxcnt then
-    vim.cmd('tabmove' .. dir .. cnt)
-  else -- Don't wrap around to the opposite side.
-    vim.cmd('tabmove' .. toedge)
-  end
-end
-
-vim.keymap.set('n', '<M-}>', function()
-  tabmove('+', vim.v.count)
-end, { desc = 'Move tabpage {count} places to the right' })
-vim.keymap.set('n', '<M-{>', function()
-  tabmove('-', vim.v.count)
-end, { desc = 'Move tabpage {count} places to the left' })
 
 -- Go to previous (or any other) window.
 local function switch_to_alt_win()
@@ -131,11 +80,6 @@ vim.keymap.set({ 'n', 'i', 't' }, '<M-j>', [[<C-\><C-N><C-W>j]])
 vim.keymap.set({ 'n', 'i', 't' }, '<M-k>', [[<C-\><C-N><C-W>k]])
 vim.keymap.set({ 'n', 'i', 't' }, '<M-l>', [[<C-\><C-N><C-W>l]])
 
-vim.keymap.set('n', '<C-Left>', '<Cmd>vertical resize -2<CR>')
-vim.keymap.set('n', '<C-Down>', '<Cmd>resize -2<CR>')
-vim.keymap.set('n', '<C-Up>', '<Cmd>resize +2<CR>')
-vim.keymap.set('n', '<C-Right>', '<Cmd>vertical resize +2<CR>')
-
 vim.keymap.set('x', 'Y', '"+y')
 vim.keymap.set('x', 'D', '"+d')
 
@@ -155,56 +99,6 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     local lcount = vim.api.nvim_buf_line_count(ev.buf)
     if mark[1] > 0 and mark[1] <= lcount then
       vim.cmd 'normal! g`"'
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd({ 'BufWritePre', 'FileWritePre' }, {
-  group = augroup,
-  desc = 'Auto-create parent directories',
-  callback = function(ev)
-    -- Except for URIs
-    if not ev.match:match '://' then
-      vim.fn.mkdir(vim.fn.fnamemodify(ev.match, ':p:h'), 'p')
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  group = augroup,
-  desc = 'Close some file types with `q`',
-  pattern = {
-    'checkhealth',
-    'help',
-    'qf',
-  },
-  callback = function(ev)
-    vim.bo[ev.buf].buflisted = false
-    vim.schedule(function()
-      vim.keymap.set('n', 'q', function()
-        vim.cmd 'close'
-        pcall(vim.api.nvim_buf_delete, ev.buf, { force = true })
-      end, { buffer = ev.buf, desc = 'Close some file types with `q`' })
-    end)
-  end,
-})
-
-vim.api.nvim_create_autocmd('TextYankPost', {
-  group = augroup,
-  desc = 'Highlight yanked text',
-  callback = function()
-    vim.hl.on_yank { higroup = 'Visual', timeout = 300 }
-  end,
-})
-
-vim.api.nvim_create_autocmd('TextYankPost', {
-  group = augroup,
-  desc = 'Store yanked text in registers 1-9',
-  callback = function()
-    if vim.v.event.operator == 'y' then
-      for i = 9, 1, -1 do
-        vim.fn.setreg(tostring(i), vim.fn.getreg(tostring(i - 1)))
-      end
     end
   end,
 })
@@ -341,13 +235,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 
-    if client:supports_method 'textDocument/completion' then
-      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-      vim.keymap.set('i', '<C-Space>', function()
-        vim.lsp.completion.get()
-      end, { buffer = ev.buf, desc = 'vim.lsp.completion.get()' })
-    end
-
     if client:supports_method 'textDocument/inlayHint' then
       vim.keymap.set('n', '<BS>', function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -357,20 +244,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if client:supports_method 'textDocument/documentSymbol' then
       vim.keymap.set('n', 'gO', '<Cmd>FzfLua lsp_document_symbols<CR>', { buffer = ev.buf })
     end
+
     if client:supports_method 'workspace/symbol' then
       vim.keymap.set('n', 'gr/', '<Cmd>FzfLua lsp_workspace_symbols<CR>', { buffer = ev.buf })
-    end
-
-    if client:supports_method 'textDocument/foldingRange' then
-      local win = vim.api.nvim_get_current_win()
-      vim.wo[win][0].foldmethod = 'expr'
-      vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
-    end
-
-    if client:supports_method 'textDocument/definition' then
-      vim.keymap.set('n', 'gd', function()
-        vim.lsp.buf.definition()
-      end, { buffer = ev.buf, desc = 'vim.lsp.buf.definition()' })
     end
   end,
 })
