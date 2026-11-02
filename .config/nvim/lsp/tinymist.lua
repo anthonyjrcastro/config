@@ -1,4 +1,4 @@
---- See the tinymist [server-side configurations](https://github.com/Myriad-Dreamin/tinymist/blob/main/editors/neovim/Configuration.md)
+--- See the tinymist [server-side configurations](https://myriad-dreamin.github.io/tinymist/config/neovim.html)
 --- for settings documentation.
 ---@type vim.lsp.Config
 return {
