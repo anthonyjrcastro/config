@@ -1,0 +1,14 @@
+# ~/.inputrc
+$include /etc/inputrc
+
+set completion-ignore-case on
+set show-all-if-ambiguous on
+
+# Since `C-s` is also XOFF.
+"\es": forward-search-history
+
+"\C-p": history-search-backward
+"\C-n": history-search-forward
+
+# Don't echo `C-c` to stdout.
+set echo-control-characters off
