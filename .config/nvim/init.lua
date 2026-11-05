@@ -14,6 +14,7 @@ func! s:line_outer_movement() abort
   call setpos("']", [0, lclose, cclose, 0])
   return "'[o']"
 endf
+
 xnoremap <expr> al <SID>line_outer_movement()
 onoremap al <Cmd>normal Val<CR>
 
@@ -27,6 +28,7 @@ func! s:line_inner_movement() abort
   call setpos("']", [0, lclose, cclose, 0])
   return "`[o`]"
 endf
+
 xnoremap <expr> il <SID>line_inner_movement()
 onoremap il <Cmd>normal vil<CR>
 ]]
@@ -73,6 +75,7 @@ vim.keymap.set('n', '<Tab>', function()
     vim.cmd(vim.v.count .. 'wincmd w')
   end
 end, { desc = 'Go to previous (or any other) window' })
+
 vim.keymap.set('n', '<S-Tab>', '<C-^>')
 
 vim.keymap.set({ 'n', 'i', 't' }, '<M-h>', [[<C-\><C-N><C-W>h]])
@@ -179,6 +182,7 @@ gitsigns.setup {
         gitsigns.nav_hunk 'next'
       end
     end, 'Jump to the next hunk')
+
     nnoremap('[c', function()
       if vim.wo.diff then
         vim.cmd.normal { '[c', bang = true }
@@ -190,6 +194,7 @@ gitsigns.setup {
     nnoremap('Ub', function()
       gitsigns.blame_line { full = true }
     end, 'Run blame on current line')
+
     nnoremap('Up', gitsigns.preview_hunk_inline, 'Preview the hunk under cursor')
     nnoremap('Ur', gitsigns.reset_hunk, 'Reset the hunk under cursor')
     nnoremap('Us', gitsigns.stage_hunk, 'Stage the hunk under cursor')
@@ -215,6 +220,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 vim.keymap.set('n', 'gK', function()
   vim.diagnostic.open_float()
 end, { desc = 'Show diagnostics under the cursor' })
+
 vim.keymap.set('n', 'grq', function()
   vim.diagnostic.setqflist()
 end, { desc = 'vim.diagnostic.setqflist()' })
