@@ -136,7 +136,6 @@ vim.pack.add {
   'https://github.com/kylechui/nvim-surround',
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/mfussenegger/nvim-lint',
-  'https://github.com/miikanissi/modus-themes.nvim',
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/stevearc/quicker.nvim',
   'https://github.com/tpope/vim-fugitive',
@@ -224,8 +223,6 @@ end, { desc = 'Show diagnostics under the cursor' })
 vim.keymap.set('n', 'grq', function()
   vim.diagnostic.setqflist()
 end, { desc = 'vim.diagnostic.setqflist()' })
-
-vim.cmd 'colorscheme modus'
 
 vim.lsp.enable {
   'clangd',
