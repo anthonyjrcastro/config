@@ -2,9 +2,9 @@
 # shellcheck shell=bash
 
 PROMPT_COMMAND+=(
-  'history -a'
-  'printf "\033]133;A\007"'
-  'printf "\033]7;file://%s%s\007" "${HOSTNAME}" "${PWD}"'
+	'history -a'
+	'printf "\033]133;A\007"'
+	'printf "\033]7;file://%s%s\007" "${HOSTNAME}" "${PWD}"'
 )
 
 [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ] && \. /usr/share/git-core/contrib/completion/git-prompt.sh

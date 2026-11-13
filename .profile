@@ -2,14 +2,14 @@
 # shellcheck shell=sh
 
 pathadd() {
-  [ -d "$1" ] || return
+	[ -d "$1" ] || return
 
-  case ":${PATH}:" in
-    *:"$1":*) ;;
-    *)
-      PATH="$1${PATH:+:$PATH}"
-      ;;
-  esac
+	case ":${PATH}:" in
+	*:"$1":*) ;;
+	*)
+		PATH="$1${PATH:+:$PATH}"
+		;;
+	esac
 }
 
 pathadd /opt/jdt-language-server/bin
@@ -17,10 +17,10 @@ pathadd /opt/jdt-language-server/bin
 unset -f pathadd
 
 if command -v nvim >/dev/null 2>&1; then
-  export EDITOR=nvim
-  export MANPAGER='nvim +Man!'
+	export EDITOR=nvim
+	export MANPAGER='nvim +Man!'
 elif command -v vi >/dev/null 2>&1; then
-  export EDITOR=vi
+	export EDITOR=vi
 fi
 
 export NVM_DIR="${HOME}/.nvm"
